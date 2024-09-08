@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>new </title>
+
+</head>
+<body>
+    <div class = "container">
+        <div class="sub">
+            <label>
+                Course Id
+            <input id = "Course_id" required></input>
+            </label>
+        </div>
+
+        
+        
+        
+
+            <div class="sub">
+                <p>Section id</p>
+                <input id = "Section_id"></input>
+                <input id = "check" type ="checkbox" onchange="valueChanged()">Has prcatical Section ?</input>
+                <p class = "hide">Practical Section id</p>
+                <input class = "hide" id = "Practical_Section_id"></input>
+                
+            </div>
+        <div id = "days">
+        <div class="sub">
+            <p>Sunday</p>
+            <input id = "day"></input>
+            <input class = "hide" id  = "dayP"></input>
+        </div>
+        <div class="sub">
+            <p>monday</p>
+            <input id = "day"></input>
+            <input class = "hide" id = "dayP"></input>
+        </div>
+        <div class="sub">
+            <p>tuesday</p>
+            <input id = "day"></input>
+            <input class = "hide" id = "dayP"></input>
+        </div>
+        <div class="sub">
+            <p>wednesday</p>
+            <input id = "day"></input>
+            <input class = "hide" id = "dayP"></input>
+        </div>
+        <div class="sub">
+            <p>thursday</p>
+            <input id = "day"></input>
+            <input class = "hide" id = "dayP"></input>
+        </div>
+        </div>
+    </div>
+    <div>
+        <button onclick="confirmation()"> insert</button>
+        </div>
+
+</body>
+    
+    
+
+<style>
+    Input {
+        width: 7em;
+        margin-top: 15px;
+    }
+    .container {
+        display:flex;
+        /* position:relative; */
+        justify-content:center;
+        gap: 1em;
+        margin: 10em;
+
+    }
+    .sub {
+        display: flex;
+        flex-direction:column;
+
+    }
+    p {
+        margin-bottom: 3px;
+    }
+    .hide {
+        display: none;
+    }
+    #days {
+        display: flex;
+        gap: 5px;
+    }
+
+</style>
+
+<script>
+    function valueChanged()
+    {
+        let s = document.querySelectorAll('.hide');
+        let checkbox = document.getElementById("check");
+        if(checkbox.checked)   
+        {
+            console.log("on");
+            s.forEach(l => {
+                l.style.display = "block";
+            })
+        }
+        
+        else
+        {
+            console.log("off");
+            s.forEach(l => {
+                l.style.display = "none";
+                l.value = "";
+            })
+        }
+            
+    }
+
+    function confirmation()
+    {
+        if (confirm("asd"))
+        {
+            insert();
+        }
+        else{
+            console.log("cancelled");
+        }
+    }
+
+    function insert() {
+            
+        let c = document.getElementById('Course_id');
+        let s = document.getElementById('Section_id');
+        let sp = document.getElementById("Practical_Section_id");
+        var d = document.getElementById('days');
+        var theoryList = d.querySelectorAll('.sub > Input#day');
+        var practicalList = d.querySelectorAll('.sub > Input#dayP');
+        let checkbox = document.getElementById("check");
+
+        if (c.value == '')
+        {
+            console.log("course is empty");
+            return;
+        }
+        if (s.value == '')
+        {
+            console.log("section is empty");
+            return;
+        }
+        if (checkbox.checked)
+        {
+            if (sp.value == '')
+            {
+                console.log("practical is empty");
+                return;
+            }
+        }
+        dayNumber = 100;
+        for (i = 0; i < theoryList.length; i++)
+        {
+            let day = theoryList[i].value;
+            if (/^[0-9,\b]+$/.test(day))
+        {
+            
+            let a = day.split(',').map(Number);
+            for (j = 0; j < a.length; j++)
+            {
+                if (a[j] >= 44 || a[j] <= 86)
+                {
+                    a[j] = getNumber(a[j]) + dayNumber;
+                }
+                else{
+                    break;
+                }
+                
+            }
+            console.log(a);
+            dayNumber += 100;
+        }
+        }
+
+        
+    }
+
+    function getNumber(n) {
+        switch (n) 
+        {
+            case 54:
+                return 1;
+                break;
+            case 86:
+                return 2;
+                break;
+            case 44:
+                return 3;
+            case 80: 
+                return 4;
+                break;
+            case 57: 
+                return 5;
+                break;
+            case 47: 
+                return 6;
+                break;
+            case 63:
+                return 7;
+                break;
+            case 52: 
+                return 8;
+                break;
+            case 51: 
+                return 9;
+                break;
+            case 72:
+                return 10;
+                break;
+            case 69:
+                return 11;
+                break
+            default:
+                return 0;
+                break;
+        }
+    }
+</script>
+</html>

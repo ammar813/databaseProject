@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Selection window</title>
+    <style>
+        /* Optional: Add some styling to the list items */
+        html {
+            font-family: HelveticaNeueLTArabicRoman, tahoma;
+        }
+        a {
+            padding: 5px;
+			background-color: #f7941d;
+			color: #ffffff;
+            border-radius: 5px;
+            margin-top: 4em;
+            margin-inline: 2em;
+            width: 8em;
+            align-self:center;
+            text-align: center;
+            
+
+		}
+        ul {
+            list-style-type: none;
+            padding-top: 1px;
+            padding-right: 1px;
+            padding-left: 1px;
+			width: 15em;
+			height: 15em;
+			overflow-y: auto;
+            display:inline-block;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            border-width: 2px;
+            margin-inline: 30px;
+            margin-bottom: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            
+        }
+		
+        li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+			background-color: #eee;
+			color: black;
+			display: block;
+			text-decoration: none;
+            border-radius: 5px;
+            
+        }
+        li.selected {
+            background-color: #f7941d;
+            color: white;
+        }
+		
+		li:hover {
+			background-color: #ccc;
+			transition: 0.2s;
+            color: black;
+		}
+
+        .row-nav{
+            margin: 0;
+            padding: 0;
+            border-bottom: 10px solid #731720;
+            background: white;
+            height: 6em;
+            width: 100%;
+            list-style: none;
+            
+        }
+        
+        body {
+            background-color: #e1e1e1;
+            margin: 0;
+        }
+        .row-bottom {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            height: 3em;
+            width: 100%;
+            background-color: #F7941D;
+            text-align: center;
+        }
+        .all {
+            display: flex;
+            justify-content: center;
+            
+            margin: 0;
+            padding: 0;
+            margin-bottom: 5em;
+        }
+
+        .inner {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            
+        }
+        .button {
+            margin-top: 20px;
+            align-self:center;
+            width: 8em;
+            height: 2em;
+            border-radius: 5px;
+            border-style: none;
+            color: white;
+            background-color: #731720;
+        }
+
+        .button:hover {
+            cursor: pointer;
+            background-color: gray;
+            transition: 0.2s;
+        }
+
+        @media (max-width: 450px) {
+            a {
+                margin-top: 0em;
+                margin-inline: 1.5em;
+            }
+            .row-nav {
+                height: 3em;
+            }
+            .all {
+                margin-top: 6em;
+            }
+            ul {
+                width: 10em;
+                margin-inline: 0px;
+            }
+        }
+
+        .inner#off-days {
+            align-items:baseline;
+        }
+
+        label {
+            margin-top: 20px;
+            margin-left: 45px;
+            
+        }
+        input {
+            filter: invert(1);
+            
+        }
+		
+		
+    </style>
+</head>
+
+    <div class = "row-nav"></div>
+    <body>
+        <div class = "all">
+            <div class="inner"> 
+                <a >Courses</a>
+                <ul id="CoursesList">  
+                
+                    <!-- Add more list items as needed -->
+                </ul>
+                <button class="button" id = "select" >Select</button>
+            </div>
+        
+            <div class = "inner">
+                <a>Selected Courses</a>
+                <ul id="SelectedCoursesList">
+                
+                </ul>
+                <button class="button" id = "delete" onclick="Delete()" >Delete</button>
+                <button class="button" id = "send" onclick="SendData()" >Submit</button>
+            </div>
+
+            <!-- <div class="inner" id = "off-days"> 
+                <a >AMMAR</a>
+                <label><input type ="checkbox">Sunday</label>
+                <label><input type ="checkbox"> Monday</label>
+                <label><input type ="checkbox"> Tuesday</label>
+                <label><input type ="checkbox"> Wednesday</label>
+                <label><input type ="checkbox"> Friday</label>
+            </div> -->
+
+        </div>
+        
+
+
+        
+        <!-- <button id  = "update" onclick="updateList()"> update </button> -->
+        <!-- <button onclick="()">retive Data</button> -->
+
+        
+    </div>
+
+    <div class="buttons">
+        
+</body>
+</div>
+
+<div class = "row-bottom"></div>
+   
+    
+
+    <script>
+
+    let SelectedItem;
+    let SelectedItemFromListTwo;
+    let list = document.getElementById('CoursesList');
+    let ActualList = [];
+    let SelectedActualList = new Set();
+    let listItems = document.querySelectorAll('#CoursesList li');
+    let SelectedlistItems = document.querySelectorAll('#SelectedCoursesList li');
+    // Get all list items
+
+
+// Add click event listener to each item
+
+
+
+document.getElementById('select').onclick = function() {
+    if (SelectedItem == null)
+    return;
+    if (SelectedActualList.has(SelectedItem.textContent))
+    return;
+    let newItem = document.createElement('li');
+    newItem.textContent = SelectedItem.textContent;
+    SelectedActualList.add(SelectedItem.textContent);
+    let sl = document.getElementById('SelectedCoursesList');
+    newItem.addEventListener('click', () => {
+                // Remove selection from other items
+                
+                SelectedlistItems.forEach(li => li.classList.remove('selected'));
+                // Add selection to the clicked item
+                newItem.classList.add('selected');
+                // Retrieve the selected item's data (e.g., ID)
+                // const selectedId = newItem.getAttribute('data-id');
+                SelectedItemFromListTwo = newItem;
+                // console.log(`Selected item ID: ${selectedId}`);
+                // You can perform further actions based on the selection
+            });
+            
+    sl.appendChild(newItem);
+    SelectedlistItems = document.querySelectorAll('#SelectedCoursesList li');
+   
+    listItems.forEach(li => li.classList.remove('selected'));
+    SelectedItem = null;
+    
+};
+
+
+///////////////////////////
+//  this for getting data from database
+// DONT DELETE
+    
+    fetch("/db").then(res => res.json()).then(data => data.forEach( element => {
+        ActualList.push(element.course_id); 
+        
+        let newItem = document.createElement('li');
+            newItem.textContent = element.course_id;
+            
+            newItem.addEventListener('click', () => {
+                // Remove selection from other items
+                
+                listItems.forEach(li => li.classList.remove('selected'));
+                // Add selection to the clicked item
+                newItem.classList.add('selected');
+                // Retrieve the selected item's data (e.g., ID)
+                // const selectedId = newItem.getAttribute('data-id');
+                SelectedItem = newItem;
+                // console.log(`Selected item ID: ${selectedId}`);
+                // You can perform further actions based on the selection
+            });
+            list.appendChild(newItem);
+            listItems = document.querySelectorAll('#CoursesList li');
+             
+    }))
+    //updateList();
+    
+
+
+
+
+/////////////////////////////
+
+    //console.log(ActualList);
+    
+    
+    function SendData()
+    {
+        if (SelectedActualList.size == 0)
+        return;
+
+        
+        obj = JSON.stringify(Array.from(SelectedActualList));
+        localStorage.setItem('list', obj);
+        localStorage.removeItem('allSchedules');
+        window.location = '/new';
+       
+    }
+
+    function Delete()
+    {
+        //console.log(SelectedItemFromListTwo);
+        if (SelectedActualList.size == 0 || SelectedItemFromListTwo == null)
+            return;
+        SelectedActualList.delete(SelectedItemFromListTwo.textContent);
+        SelectedItemFromListTwo.remove();
+    }
+
+    window.onload = function() {
+        obj = new Set(JSON.parse(localStorage.getItem('list')));
+        SelectedActualList = obj;
+
+        let sl = document.getElementById('SelectedCoursesList');
+        SelectedActualList.forEach(e => {
+            let newItem = document.createElement('li');
+            newItem.textContent = e;
+            newItem.addEventListener('click', () => {
+                SelectedlistItems.forEach(li => li.classList.remove('selected'));
+                newItem.classList.add('selected');
+                SelectedItemFromListTwo = newItem;
+            });
+            
+        sl.appendChild(newItem);
+        })
+
+    }
+
+    
+    </script>
+</body>
+</html>

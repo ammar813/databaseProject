@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table window</title>
+    <div class = "row-nav"></div>
+    <body>
+    <div class = "table">
+<table class = 'hide' id = 'scheduletable'>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+    <tr>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+      <td>
+        sad
+      </td>
+    </tr>
+</table>
+
+  <ul class = 'hide' id = "sectionList">
+    <li>
+      asdgg
+    </li>
+    <li>
+      asd
+    </li>
+  </ul>
+
+</div>
+<div class = 'show' style="display: none; justify-items: center; align-items:end; height: 200px;">
+  thers is no data to display
+</div>
+<div class = "buttons">
+<button onclick="window.location = '/test';">Go back</button>
+<button class = 'hide' onclick="goNext()">Next</button>
+<button class = 'hide'>Export</button>
+</div>
+<div>
+  <p class = 'hide' id = "text">showing Schedule 0 out of 0</p>
+  
+</div>
+
+</body>
+<div class = "row-bottom"></div>
+<p><br></p>
+</head>
+
+    <script> 
+    w = 0;
+    let allSchedules = [];
+      
+
+function getY(number)
+{
+    return Math.floor((number / 100) % 10) ; 
+}
+
+function getX(number)
+{
+    a = (number % 10);
+    b = ((Math.floor(number / 10) % 10) * 10);
+    c = a + b;
+    return Math.floor(c);
+}
+
+function goNext()
+{
+  w = (w + 1) % allSchedules.length;
+  createTable(allSchedules[w]);
+  
+}
+function updateText()
+{
+  var c = document.getElementById("text");
+  c.textContent = "Showing Schedule " + (w + 1) + " out of " + allSchedules.length;
+  let sl = document.getElementById('sectionList');
+  sl.innerHTML = "";
+  //console.log(allSchedules[w]);
+  for (i = 0; i < allSchedules[w].SectionList.length; i++)
+  {
+    
+    let section = allSchedules[w].SectionList[i];
+    if (section.CourseId === "dayOff")
+      continue;
+    let newItem = document.createElement('li');
+    newItem.textContent = section.CourseId + "\t" + section.SectionId + "\t" + section.Type;
+    sl.appendChild(newItem);
+  }
+  
+  
+}
+
+window.onload = function() {
+  obj = localStorage.getItem('list');
+  offDays = localStorage.getItem('offdays');
+
+  //obj = JSON.parse(obj);
+  console.log(offDays);
+  schdules = localStorage.getItem('allSchedules');
+  if (schdules != null)
+  {
+    data = JSON.parse(schdules);
+    if (!data.ok)
+    {
+      hideTable()
+      return;
+    }
+    allSchedules = data.list;
+    createTable(allSchedules[0]);
+    return;
+  }
+
+  var a ={
+    obj,
+    offDays
+  }
+  fetch("/send" , {
+            method: "POST",
+            headers: {
+                "Content-type" : "application/json"
+            },
+            body: JSON.stringify(a)
+        }).then(res => res.json()).then(data => {
+          s = data.ok;
+          localStorage.setItem('allSchedules', JSON.stringify(data));
+          if (!s)
+          {
+            console.log(s);
+            hideTable();
+            return;
+          }
+      console.log(data);
+      allSchedules = data.list;
+      
+        
+        
+        createTable(allSchedules[0]);
+        //
+        // here after getting data
+        //
+    });
+        
+  
+    
+   
+}
+
+
+function createTable(tableData) {
+          s = [
+        ["",            "sunday", "monday", "tuesday", "wednesday", "thursday"],
+        ["7:15 - 8:05", "",       "",       "",        "",          ""],
+        ["8:15 - 9:05", "", "", "", "", ""],
+        ["9:15 - 10:05", "", "", "", "", ""],
+        ["10:15 - 11:05", "", "", "", "", ""],
+        ["11:15 - 12:05", "", "", "", "", ""],
+        ["12:15 - 13:05", "", "", "", "", ""],
+        ["13:15 - 14:05", "", "", "", "", ""],
+        ["14:15 - 15:05", "", "", "", "", ""],
+        ["15:15 - 16:05", "", "", "", "", ""],
+        ["16:15 - 17:05", "", "", "", "", ""],
+        ["17:15 - 18:05", "", "", "", "", ""]
+];
+
+tableData.SectionList.forEach(section =>
+            {
+              
+                let eachSectionPeriod = [];
+                eachSectionPeriod.push(...section.PeriodsList);     
+                eachSectionPeriod.forEach(p => {
+                  if (section.CourseId === "dayOff")
+                  return;
+                    x = getX(p);
+                    y = getY(p);
+                   s[x][y] = section.CourseId + " " + section.Type;
+
+                   
+                })
+                
+                
+            })
+    var table = document.getElementById('scheduletable');
+    resetTable();
+    let rowCount = 1;
+    for(i = 0; i < table.rows.length; i++)
+    {
+      var row = table.rows[i];
+      for (j = 0; j < row.cells.length; j++)
+      {
+        table.rows[i].cells[j].innerText = s[i][j];
+        
+      }
+    }
+    let headerCell = null;
+
+
+  for (i = 0; i < 6; i++)
+  {
+    for (let row of table.rows) 
+    {
+    let firstCell = row.cells[i];
+
+    if (headerCell === null || firstCell.innerText !== headerCell.innerText || firstCell.innerText == "") 
+    {
+      headerCell = firstCell;
+    } 
+    else
+    {
+      headerCell.rowSpan++;
+      firstCell.style.display = "none";
+    }
+
+    }
+  }
+  
+    updateText();
+}
+
+
+function resetTable()
+{
+  var table = document.getElementById('scheduletable');
+    for (let row of table.rows)
+    {
+      for (let cell of row.cells)
+      {
+        cell.style.display = "table-cell";
+        cell.rowSpan = 1;
+      }
+    }
+}
+
+function hideTable()
+{
+  document.querySelectorAll(".hide").forEach(el => {
+    el.style.display = "none";
+  })
+  
+  document.querySelector('.show').style.display = "flex";
+
+}
+
+
+    </script>
+    <style>
+      html {
+        font-family: HelveticaNeueLTArabicRoman, tahoma;
+      }
+      body {
+        background-color: #e1e1e1;
+        
+      }
+      table {
+        border-radius: 15px;
+        border-collapse:collapse;
+        border: 2px solid rgb(0, 0, 0); 
+        text-align: center;
+        background-color: white;
+      }
+      tr {
+
+        justify-content: center;
+        
+        &:nth-child(1)
+        {
+          font-weight: 900;
+          background-color: #faaf55;
+        }
+        
+      }
+
+      td {
+        border-width: 1px;
+        border-style: solid;
+    
+        height: 2em;
+        width: 6em;
+        &:nth-child(1)
+        {
+          width: 130px;
+          font-weight: 900;
+          background-color: #faaf55;
+        }
+      }
+      .table {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .buttons {
+        display: flex;
+        justify-content: center;
+      }
+      button {
+        margin-top: 20px;
+        margin-right: 20px;
+            align-self:center;
+            width: 8em;
+            height: 2em;
+            border-radius: 5px;
+            border-style: none;
+            color: white;
+            background-color: #731720;
+      }
+      button:hover {
+            cursor: pointer;
+            background-color: gray;
+            transition: 0.2s;
+        }
+        div {
+          display: flex;
+          justify-content: center;
+        }
+        .row-nav{
+            margin: 0;
+            padding: 0;
+            border-bottom: 10px solid #731720;
+            background: white;
+            height: 6em;
+            width: 100%;
+            list-style: none;
+            
+        }
+        body {
+          margin: 0;
+        }
+        .row-bottom {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            height: 3em;
+            width: 100%;
+            background-color: #F7941D;
+            text-align: center;
+        }
+
+        li {
+          margin-top: 0.5em;
+        }
+
+        @media (max-width: 450px) {
+            Table {
+              table-layout:fixed;
+              margin-left: 20px;
+              margin-right: 20px;
+              width: 100%;
+            }
+            .table {
+              display: block;
+              overflow: scroll;
+            }
+
+            td, th {
+            font-size: 14px;
+            }
+        }
+    </style>
+</body>
+</html>

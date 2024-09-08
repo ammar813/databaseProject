@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Selection window</title>
+    <style>
+        /* Optional: Add some styling to the list items */
+        html {
+            font-family: HelveticaNeueLTArabicRoman, tahoma;
+        }
+        a {
+            padding: 5px;
+			background-color: #f7941d;
+			color: #ffffff;
+            border-radius: 5px;
+            margin-top: 4em;
+            margin-inline: 2em;
+            width: 8em;
+            /* align-self:center; */
+            text-align: center;
+            
+
+		}
+        ul {
+            list-style-type: none;
+            padding-top: 1px;
+            padding-right: 1px;
+            padding-left: 1px;
+			width: 15em;
+			height: 15em;
+			overflow-y: auto;
+            display:inline-block;
+            background-color: #f3f3f3;
+            border-radius: 5px;
+            border-width: 2px;
+            margin-inline: 30px;
+            margin-bottom: 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            
+        }
+		
+        li {
+            padding: 5px;
+            border-bottom: 1px solid #ccc;
+            cursor: pointer;
+			background-color: #eee;
+			color: black;
+			display: block;
+			text-decoration: none;
+            border-radius: 5px;
+            
+        }
+        li.selected {
+            background-color: #f7941d;
+            color: white;
+        }
+		
+		li:hover {
+			background-color: #ccc;
+			transition: 0.2s;
+            color: black;
+		}
+
+        .row-nav{
+            margin: 0;
+            padding: 0;
+            border-bottom: 10px solid #731720;
+            background: white;
+            height: 6em;
+            width: 100%;
+            list-style: none;
+            
+        }
+        
+        body {
+            background-color: #e1e1e1;
+            margin: 0;
+        }
+        .row-bottom {
+            display: block;
+            position: fixed;
+            bottom: 0;
+            height: 3em;
+            width: 100%;
+            background-color: #F7941D;
+            text-align: center;
+        }
+        .all {
+            display: flex;
+            
+            justify-content: center;
+            
+            margin: 0;
+            padding: 0;
+            margin-bottom: 5em;
+        }
+
+        .inner {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            
+        }
+        .button {
+            margin-top: 20px;
+            align-self:center;
+            width: 8em;
+            height: 2em;
+            border-radius: 5px;
+            border-style: none;
+            color: white;
+            background-color: #731720;
+        }
+
+        .button:hover {
+            cursor: pointer;
+            background-color: gray;
+            transition: 0.2s;
+        }
+
+        @media (max-width: 780px) {
+            a {
+                margin-top: 0em;
+                margin-inline: 1.5em;
+            }
+            .row-nav {
+                height: 3em;
+            }
+            .all {
+                margin-top: 4em;
+                flex-direction: column;
+                gap: 10px;
+            }
+            ul {
+                width: 10em;
+                margin-inline: 0px;
+            }
+
+            
+            
+        }
+        .inner#off-days {
+            align-items: baseline;
+        }
+
+        .inner#off-days > div {
+            display:flex;
+            flex-direction: column; 
+
+            
+        }
+
+        label {
+            margin-top: 20px;
+            /* margin-left: 45px; */
+            
+        }
+        input {
+            filter: invert(1);
+            
+        }
+
+        .sad {
+            display: flex;
+            align-self: center;
+        }
+		
+		
+    </style>
+</head>
+
+    <div class = "row-nav"></div>
+    <body>
+        <div class = "all">
+            <div class = "sad">
+                <div class="inner"> 
+                    <a >Courses</a>
+                    <ul id="CoursesList">  
+                    
+                        <!-- Add more list items as needed -->
+                    </ul>
+                    <button class="button" id = "select" >Select</button>
+                </div>
+            
+                <div class = "inner">
+                    <a>Selected Courses</a>
+                    <ul id="SelectedCoursesList">
+                    
+                    </ul>
+                    <button class="button" id = "delete" onclick="Delete()" >Delete</button>
+                    <button class="button" id = "send" onclick="SendData()" >Submit</button>
+                </div>
+            </div>
+
+            <div class="inner" id = "off-days"> 
+                <a >Off Days</a>
+                <div>
+                    <label><input type ="checkbox" name = "off" onchange="check(this)"> Sunday</label>
+                    <label><input type ="checkbox" name = "off" onchange="check(this)"> Monday</label>
+                    <label><input type ="checkbox" name = "off" onchange="check(this)"> Tuesday</label>
+                    <label><input type ="checkbox" name = "off" onchange="check(this)"> Wednesday</label>
+                    <label><input type ="checkbox" name = "off" onchange="check(this)"> Thursday</label>
+                </div>
+            </div>
+
+        </div>
+        
+
+
+    
+    </div>
+
+        
+</body>
+
+<div class = "row-bottom"></div>
+   
+    
+
+    <script>
+        
+
+    let SelectedItem;
+    let SelectedItemFromListTwo;
+    let list = document.getElementById('CoursesList');
+    let ActualList = [];
+    let SelectedActualList = new Set();
+    let listItems = document.querySelectorAll('#CoursesList li');
+    let SelectedlistItems = document.querySelectorAll('#SelectedCoursesList li');
+   
+    let limit = false;
+
+let as = '<%- object %>';
+        abc = JSON.parse(as);
+        abc.forEach( element => {
+        ActualList.push(element); 
+        
+        let newItem = document.createElement('li');
+            newItem.textContent = element;
+            
+            newItem.addEventListener('click', () => {
+                listItems.forEach(li => li.classList.remove('selected'));
+                newItem.classList.add('selected');
+                SelectedItem = newItem;
+            });
+            list.appendChild(newItem);
+            listItems = document.querySelectorAll('#CoursesList li');
+             
+    })
+
+
+
+document.getElementById('select').onclick = function() {
+    if (SelectedItem == null)
+    return;
+    if (SelectedActualList.has(SelectedItem.textContent))
+    return;
+    let newItem = document.createElement('li');
+    newItem.textContent = SelectedItem.textContent;
+    SelectedActualList.add(SelectedItem.textContent);
+    let sl = document.getElementById('SelectedCoursesList');
+    newItem.addEventListener('click', () => {
+                SelectedlistItems.forEach(li => li.classList.remove('selected'));
+                newItem.classList.add('selected');
+                SelectedItemFromListTwo = newItem;
+            });
+            
+    sl.appendChild(newItem);
+    SelectedlistItems = document.querySelectorAll('#SelectedCoursesList li');
+   
+    listItems.forEach(li => li.classList.remove('selected'));
+    SelectedItem = null;
+    
+};
+
+
+
+    
+    
+    function SendData()
+    {
+        if (SelectedActualList.size == 0)
+        return;
+
+        offDays = [];
+        document.querySelectorAll('input[name="off"]').forEach(el => {
+            offDays.push(el.checked == true ? 1 : 0);  
+        })
+
+        localStorage.setItem('offdays', JSON.stringify(offDays));
+        
+        obj = JSON.stringify(Array.from(SelectedActualList));
+        localStorage.setItem('list', obj);
+        localStorage.removeItem('allSchedules');
+        window.location = '/new';
+       
+    }
+
+    function Delete()
+    {
+        //console.log(SelectedItemFromListTwo);
+        if (SelectedActualList.size == 0 || SelectedItemFromListTwo == null)
+            return;
+        SelectedActualList.delete(SelectedItemFromListTwo.textContent);
+        SelectedItemFromListTwo.remove();
+    }
+
+    window.onload = function() {
+        obj = new Set(JSON.parse(localStorage.getItem('list')));
+        SelectedActualList = obj;
+
+        let sl = document.getElementById('SelectedCoursesList');
+        SelectedActualList.forEach(e => {
+            let newItem = document.createElement('li');
+            newItem.textContent = e;
+            newItem.addEventListener('click', () => {
+                SelectedlistItems.forEach(li => li.classList.remove('selected'));
+                newItem.classList.add('selected');
+                SelectedItemFromListTwo = newItem;
+            });
+            
+        sl.appendChild(newItem);
+        })
+        SelectedlistItems = document.querySelectorAll('#SelectedCoursesList li');
+
+    }
+
+    
+
+    
+
+    function check(a)
+    {   
+        if (a.checked)
+        {
+            if (!limit)
+            {
+                limit = true;
+            }
+            else
+            {
+                alert("you cannot have more than one day off");
+                a.checked = false;
+            }
+        }
+        else 
+        {
+            limit = false;
+            
+        }
+        
+    }
+
+    
+    </script>
+</body>
+</html>
